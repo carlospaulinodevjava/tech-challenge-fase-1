@@ -1,11 +1,13 @@
 package br.com.fiap.restaurante.gestao.domain.model;
 
+import br.com.fiap.restaurante.gestao.domain.TipoUsuario;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Data
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,11 +22,13 @@ public class Usuario {
     private String login;
     private String senha;
 
-    @Setter
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tipo_usuario", nullable = false)
+    private TipoUsuario tipoUsuario;
+
     @Column(name = "data_ultima_alteracao")
     private LocalDateTime dataUltimaAlteracao;
 
-    @Getter
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Endereco> enderecos;
 
