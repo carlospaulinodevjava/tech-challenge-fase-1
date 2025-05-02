@@ -2,6 +2,7 @@ package br.com.fiap.restaurante.gestao.presentation.controller;
 
 import br.com.fiap.restaurante.gestao.application.usecase.impl.CriarUsuarioUseCase;
 import br.com.fiap.restaurante.gestao.presentation.dto.UsuarioDTO;
+import br.com.fiap.restaurante.gestao.presentation.dto.UsuarioResponseDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,9 +21,9 @@ public class UsuarioController {
     }
 
     @PostMapping
-    public ResponseEntity<?> criar(@RequestBody UsuarioDTO usuarioDTO) {
-        var usuario = criarUsuarioUseCase.executar(usuarioDTO);
-        return new ResponseEntity<>(usuario, HttpStatus.CREATED);
+    public ResponseEntity<UsuarioResponseDTO> criar(@RequestBody UsuarioDTO usuarioDTO) {
+        var response = criarUsuarioUseCase.executar(usuarioDTO);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
 }

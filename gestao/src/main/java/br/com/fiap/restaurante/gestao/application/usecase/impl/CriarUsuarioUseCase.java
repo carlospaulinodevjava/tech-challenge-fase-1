@@ -4,6 +4,7 @@ import br.com.fiap.restaurante.gestao.domain.model.Usuario;
 import br.com.fiap.restaurante.gestao.domain.repository.UsuarioRepository;
 import br.com.fiap.restaurante.gestao.mapper.UsuarioMapper;
 import br.com.fiap.restaurante.gestao.presentation.dto.UsuarioDTO;
+import br.com.fiap.restaurante.gestao.presentation.dto.UsuarioResponseDTO;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -19,10 +20,11 @@ public class CriarUsuarioUseCase {
         this.usuarioMapper = usuarioMapper;
     }
 
-    public Usuario executar(UsuarioDTO dto) {
+    public UsuarioResponseDTO executar(UsuarioDTO dto) {
         Usuario usuario = usuarioMapper.toEntity(dto);
         usuario.setDataUltimaAlteracao(LocalDateTime.now());
         usuario.getEnderecos().forEach(e -> e.setUsuario(usuario));
-        return usuarioRepository.save(usuario);
+        Usuario salvo = usuarioRepository.save(usuario);
+        return usuarioMapper.toResponseDto(salvo);
     }
 }
