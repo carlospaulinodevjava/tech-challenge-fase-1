@@ -7,10 +7,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
 public class ExcluirUsuarioPorIdUseCase {
 
     private final UsuarioRepository usuarioRepository;
+
+    public ExcluirUsuarioPorIdUseCase(UsuarioRepository usuarioRepository) {
+        this.usuarioRepository = usuarioRepository;
+    }
 
     public void executar(Long id) {
         Usuario usuario = usuarioRepository.findById(id)

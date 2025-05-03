@@ -10,11 +10,15 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
 public class BuscarUsuarioPorIdUseCase {
 
     private final UsuarioRepository usuarioRepository;
     private final UsuarioMapper usuarioMapper;
+
+    public BuscarUsuarioPorIdUseCase(UsuarioRepository usuarioRepository, UsuarioMapper usuarioMapper) {
+        this.usuarioRepository = usuarioRepository;
+        this.usuarioMapper = usuarioMapper;
+    }
 
     public UsuarioResponseDTO executar(Long id){
         return usuarioRepository.findById(id).map(usuarioMapper::toResponseDto)

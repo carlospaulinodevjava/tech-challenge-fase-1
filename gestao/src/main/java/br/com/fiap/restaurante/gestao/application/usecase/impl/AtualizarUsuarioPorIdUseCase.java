@@ -15,11 +15,15 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 
 @Service
-@RequiredArgsConstructor
 public class AtualizarUsuarioPorIdUseCase {
 
     private final UsuarioRepository usuarioRepository;
     private final UsuarioMapper usuarioMapper;
+
+    public AtualizarUsuarioPorIdUseCase(UsuarioRepository usuarioRepository, UsuarioMapper usuarioMapper) {
+        this.usuarioRepository = usuarioRepository;
+        this.usuarioMapper = usuarioMapper;
+    }
 
     @Transactional
     public UsuarioResponseDTO executar(Long id, UsuarioDTO dto) {
