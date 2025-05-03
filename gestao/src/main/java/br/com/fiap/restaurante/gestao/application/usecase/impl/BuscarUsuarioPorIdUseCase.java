@@ -16,9 +16,9 @@ public class BuscarUsuarioPorIdUseCase {
     private final UsuarioRepository usuarioRepository;
     private final UsuarioMapper usuarioMapper;
 
-    public Optional<UsuarioResponseDTO> executar(Long id){
-        return Optional.ofNullable(usuarioRepository.findById(id).map(usuarioMapper::toResponseDto)
-                .orElseThrow(() -> new ResourceNotFoundException("Usuario não encontrado")));
+    public UsuarioResponseDTO executar(Long id){
+        return usuarioRepository.findById(id).map(usuarioMapper::toResponseDto)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario não encontrado"));
     }
 
 }
