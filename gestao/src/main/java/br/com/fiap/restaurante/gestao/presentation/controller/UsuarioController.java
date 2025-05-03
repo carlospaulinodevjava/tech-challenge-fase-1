@@ -1,5 +1,6 @@
 package br.com.fiap.restaurante.gestao.presentation.controller;
 
+import br.com.fiap.restaurante.gestao.application.usecase.impl.BuscarUsuarioPorIdUseCase;
 import br.com.fiap.restaurante.gestao.application.usecase.impl.CriarUsuarioUseCase;
 import br.com.fiap.restaurante.gestao.application.usecase.impl.ListarUsuariosUseCase;
 import br.com.fiap.restaurante.gestao.presentation.dto.UsuarioDTO;
@@ -10,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 
 @RestController
 @RequestMapping("/usuarios")
@@ -17,10 +20,12 @@ public class UsuarioController {
 
     private final CriarUsuarioUseCase criarUsuarioUseCase;
     private final ListarUsuariosUseCase listarUsuariosUseCase;
+    private final BuscarUsuarioPorIdUseCase buscarUsuarioPorIdUseCase;
 
-    public UsuarioController(CriarUsuarioUseCase criarUsuarioUseCase, ListarUsuariosUseCase listarUsuariosUseCase) {
+    public UsuarioController(CriarUsuarioUseCase criarUsuarioUseCase, ListarUsuariosUseCase listarUsuariosUseCase, BuscarUsuarioPorIdUseCase buscarUsuarioPorIdUseCase) {
         this.criarUsuarioUseCase = criarUsuarioUseCase;
         this.listarUsuariosUseCase = listarUsuariosUseCase;
+        this.buscarUsuarioPorIdUseCase = buscarUsuarioPorIdUseCase;
     }
 
     @PostMapping
@@ -33,6 +38,12 @@ public class UsuarioController {
     public ResponseEntity<Page<UsuarioResponseDTO>> listar(Pageable pageable){
         var pagina = listarUsuariosUseCase.executar(pageable);
         return ResponseEntity.ok(pagina);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Optional<UsuarioResponseDTO>> buscarPorId(@PathVariable Long id) {
+        var response = buscarUsuarioPorIdUseCase.executar(id);
+        return ResponseEntity.ok(response);
     }
 
 }
