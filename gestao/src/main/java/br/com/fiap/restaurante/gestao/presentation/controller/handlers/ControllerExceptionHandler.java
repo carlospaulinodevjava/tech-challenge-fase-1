@@ -1,6 +1,8 @@
 package br.com.fiap.restaurante.gestao.presentation.controller.handlers;
 
 import br.com.fiap.restaurante.gestao.exceptions.ResourceNotFoundException;
+import br.com.fiap.restaurante.gestao.exceptions.SenhaIncorretaException;
+import br.com.fiap.restaurante.gestao.presentation.dto.ErrorDTO;
 import br.com.fiap.restaurante.gestao.presentation.dto.ResourceNotFoundDTO;
 import br.com.fiap.restaurante.gestao.presentation.dto.ValidationErrorDTO;
 import org.springframework.http.HttpStatus;
@@ -19,6 +21,12 @@ public class ControllerExceptionHandler {
     public ResponseEntity<ResourceNotFoundDTO> handlerResourceNotFoundException(ResourceNotFoundException e) {
         var status = HttpStatus.NOT_FOUND;
         return ResponseEntity.status(status.value()).body(new ResourceNotFoundDTO(e.getMessage(), status.value()));
+    }
+
+    @ExceptionHandler(SenhaIncorretaException.class)
+    public ResponseEntity<ErrorDTO> handleSenhaIncorreta(SenhaIncorretaException ex) {
+        var erro = new ErrorDTO("Senha incorreta", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erro);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
