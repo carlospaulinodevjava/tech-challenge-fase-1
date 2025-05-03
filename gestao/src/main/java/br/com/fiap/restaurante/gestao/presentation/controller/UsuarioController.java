@@ -1,9 +1,6 @@
 package br.com.fiap.restaurante.gestao.presentation.controller;
 
-import br.com.fiap.restaurante.gestao.application.usecase.impl.AtualizarUsuarioPorIdUseCase;
-import br.com.fiap.restaurante.gestao.application.usecase.impl.BuscarUsuarioPorIdUseCase;
-import br.com.fiap.restaurante.gestao.application.usecase.impl.CriarUsuarioUseCase;
-import br.com.fiap.restaurante.gestao.application.usecase.impl.ListarUsuariosUseCase;
+import br.com.fiap.restaurante.gestao.application.usecase.impl.*;
 import br.com.fiap.restaurante.gestao.presentation.dto.UsuarioDTO;
 import br.com.fiap.restaurante.gestao.presentation.dto.UsuarioResponseDTO;
 import org.springframework.data.domain.Page;
@@ -21,13 +18,15 @@ public class UsuarioController {
     private final ListarUsuariosUseCase listarUsuariosUseCase;
     private final BuscarUsuarioPorIdUseCase buscarUsuarioPorIdUseCase;
     private final AtualizarUsuarioPorIdUseCase atualizarUsuarioPorIdUseCase;
+    private final ExcluirUsuarioPorIdUseCase excluirUsuarioPorIdUseCase;
 
 
-    public UsuarioController(CriarUsuarioUseCase criarUsuarioUseCase, ListarUsuariosUseCase listarUsuariosUseCase, BuscarUsuarioPorIdUseCase buscarUsuarioPorIdUseCase, AtualizarUsuarioPorIdUseCase atualizarUsuarioPorIdUseCase) {
+    public UsuarioController(CriarUsuarioUseCase criarUsuarioUseCase, ListarUsuariosUseCase listarUsuariosUseCase, BuscarUsuarioPorIdUseCase buscarUsuarioPorIdUseCase, AtualizarUsuarioPorIdUseCase atualizarUsuarioPorIdUseCase, ExcluirUsuarioPorIdUseCase excluirUsuarioPorIdUseCase) {
         this.criarUsuarioUseCase = criarUsuarioUseCase;
         this.listarUsuariosUseCase = listarUsuariosUseCase;
         this.buscarUsuarioPorIdUseCase = buscarUsuarioPorIdUseCase;
         this.atualizarUsuarioPorIdUseCase = atualizarUsuarioPorIdUseCase;
+        this.excluirUsuarioPorIdUseCase = excluirUsuarioPorIdUseCase;
     }
 
     @PostMapping
@@ -52,6 +51,12 @@ public class UsuarioController {
     public ResponseEntity<UsuarioResponseDTO> atualizarUsuario(@PathVariable Long id, @RequestBody UsuarioDTO dto) {
         UsuarioResponseDTO response = atualizarUsuarioPorIdUseCase.executar(id, dto);
         return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> excluir(@PathVariable Long id) {
+        excluirUsuarioPorIdUseCase.executar(id);
+        return ResponseEntity.noContent().build();
     }
 
 }
