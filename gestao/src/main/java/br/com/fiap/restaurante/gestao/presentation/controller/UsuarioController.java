@@ -1,5 +1,6 @@
 package br.com.fiap.restaurante.gestao.presentation.controller;
 
+import br.com.fiap.restaurante.gestao.application.usecase.impl.AtualizarUsuarioPorIdUseCase;
 import br.com.fiap.restaurante.gestao.application.usecase.impl.BuscarUsuarioPorIdUseCase;
 import br.com.fiap.restaurante.gestao.application.usecase.impl.CriarUsuarioUseCase;
 import br.com.fiap.restaurante.gestao.application.usecase.impl.ListarUsuariosUseCase;
@@ -11,8 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
-
 
 @RestController
 @RequestMapping("/usuarios")
@@ -21,11 +20,14 @@ public class UsuarioController {
     private final CriarUsuarioUseCase criarUsuarioUseCase;
     private final ListarUsuariosUseCase listarUsuariosUseCase;
     private final BuscarUsuarioPorIdUseCase buscarUsuarioPorIdUseCase;
+    private final AtualizarUsuarioPorIdUseCase atualizarUsuarioPorIdUseCase;
 
-    public UsuarioController(CriarUsuarioUseCase criarUsuarioUseCase, ListarUsuariosUseCase listarUsuariosUseCase, BuscarUsuarioPorIdUseCase buscarUsuarioPorIdUseCase) {
+
+    public UsuarioController(CriarUsuarioUseCase criarUsuarioUseCase, ListarUsuariosUseCase listarUsuariosUseCase, BuscarUsuarioPorIdUseCase buscarUsuarioPorIdUseCase, AtualizarUsuarioPorIdUseCase atualizarUsuarioPorIdUseCase) {
         this.criarUsuarioUseCase = criarUsuarioUseCase;
         this.listarUsuariosUseCase = listarUsuariosUseCase;
         this.buscarUsuarioPorIdUseCase = buscarUsuarioPorIdUseCase;
+        this.atualizarUsuarioPorIdUseCase = atualizarUsuarioPorIdUseCase;
     }
 
     @PostMapping
@@ -35,7 +37,7 @@ public class UsuarioController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<UsuarioResponseDTO>> listar(Pageable pageable){
+    public ResponseEntity<Page<UsuarioResponseDTO>> listar(Pageable pageable) {
         var pagina = listarUsuariosUseCase.executar(pageable);
         return ResponseEntity.ok(pagina);
     }
@@ -43,6 +45,12 @@ public class UsuarioController {
     @GetMapping("/{id}")
     public ResponseEntity<UsuarioResponseDTO> buscarPorId(@PathVariable Long id) {
         var response = buscarUsuarioPorIdUseCase.executar(id);
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<UsuarioResponseDTO> atualizarUsuario(@PathVariable Long id, @RequestBody UsuarioDTO dto) {
+        UsuarioResponseDTO response = atualizarUsuarioPorIdUseCase.executar(id, dto);
         return ResponseEntity.ok(response);
     }
 
