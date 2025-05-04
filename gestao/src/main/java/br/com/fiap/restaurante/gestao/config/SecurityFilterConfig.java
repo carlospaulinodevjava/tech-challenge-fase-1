@@ -15,6 +15,7 @@ public class SecurityFilterConfig {
         http
                 .csrf(csrf -> csrf.disable()) // Desabilita CSRF apenas em ambiente de desenvolvimento
                 .authorizeHttpRequests(auth -> auth
+                        //.requestMatchers("/usuarios/login").permitAll()
                         .anyRequest().permitAll()
                 );
         return http.build();
