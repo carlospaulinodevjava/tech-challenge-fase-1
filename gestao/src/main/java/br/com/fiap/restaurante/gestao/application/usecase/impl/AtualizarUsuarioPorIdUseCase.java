@@ -9,10 +9,7 @@ import br.com.fiap.restaurante.gestao.presentation.dto.EnderecoDTO;
 import br.com.fiap.restaurante.gestao.presentation.dto.UsuarioDTO;
 import br.com.fiap.restaurante.gestao.presentation.dto.UsuarioResponseDTO;
 import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
 
 @Service
 public class AtualizarUsuarioPorIdUseCase {
