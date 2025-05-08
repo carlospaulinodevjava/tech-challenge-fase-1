@@ -17,7 +17,7 @@ services:
 
   gestao-app:
     build:
-      context: ./gestao
+      context: .
       dockerfile: Dockerfile
     container_name: gestao_app
     ports:
