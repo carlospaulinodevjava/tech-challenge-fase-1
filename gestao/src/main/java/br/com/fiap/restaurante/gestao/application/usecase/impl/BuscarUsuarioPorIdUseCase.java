@@ -4,10 +4,7 @@ import br.com.fiap.restaurante.gestao.domain.repository.UsuarioRepository;
 import br.com.fiap.restaurante.gestao.exceptions.ResourceNotFoundException;
 import br.com.fiap.restaurante.gestao.mapper.UsuarioMapper;
 import br.com.fiap.restaurante.gestao.presentation.dto.UsuarioResponseDTO;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class BuscarUsuarioPorIdUseCase {
