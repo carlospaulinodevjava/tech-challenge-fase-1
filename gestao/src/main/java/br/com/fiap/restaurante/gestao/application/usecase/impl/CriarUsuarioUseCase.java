@@ -1,5 +1,6 @@
 package br.com.fiap.restaurante.gestao.application.usecase.impl;
 
+import br.com.fiap.restaurante.gestao.application.strategy.CriarUsuarioStrategyFactory;
 import br.com.fiap.restaurante.gestao.domain.model.Usuario;
 import br.com.fiap.restaurante.gestao.domain.repository.UsuarioRepository;
 import br.com.fiap.restaurante.gestao.mapper.UsuarioMapper;
@@ -16,19 +17,17 @@ public class CriarUsuarioUseCase {
     private final UsuarioRepository usuarioRepository;
     private final UsuarioMapper usuarioMapper;
     private final PasswordEncoder passwordEncoder;
+    private final CriarUsuarioStrategyFactory strategyFactory;
 
-    public CriarUsuarioUseCase(UsuarioRepository usuarioRepository, UsuarioMapper usuarioMapper, PasswordEncoder passwordEncoder) {
+    public CriarUsuarioUseCase(UsuarioRepository usuarioRepository, UsuarioMapper usuarioMapper, PasswordEncoder passwordEncoder, CriarUsuarioStrategyFactory strategyFactory) {
         this.usuarioRepository = usuarioRepository;
         this.usuarioMapper = usuarioMapper;
         this.passwordEncoder = passwordEncoder;
+        this.strategyFactory = strategyFactory;
     }
 
     public UsuarioResponseDTO executar(UsuarioDTO dto) {
-        dto.setSenha(passwordEncoder.encode(dto.getSenha()));
-        Usuario usuario = usuarioMapper.toEntity(dto);
-        usuario.setDataUltimaAlteracao(LocalDateTime.now());
-        usuario.getEnderecos().forEach(e -> e.setUsuario(usuario));
-        Usuario salvo = usuarioRepository.save(usuario);
-        return usuarioMapper.toResponseDto(salvo);
+        var strategy = strategyFactory.getStrategy(dto.getTipoUsuario());
+        return strategy.criar(dto);
     }
 }
