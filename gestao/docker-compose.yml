@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15.5
+    container_name: gestao_postgres
+    environment:
+      POSTGRES_DB: posfiap2025
+      POSTGRES_USER: postgreslocal
+      POSTGRES_PASSWORD: paulinodev
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - gestao-network
+
+  gestao-app:
+    build:
+      context: ./gestao
+      dockerfile: Dockerfile
+    container_name: gestao_app
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/posfiap2025
+      SPRING_DATASOURCE_USERNAME: postgreslocal
+      SPRING_DATASOURCE_PASSWORD: paulinodev
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_FLYWAY_ENABLED: true
+    networks:
+      - gestao-network
+
+volumes:
+  postgres_data:
+
+networks:
+  gestao-network:
